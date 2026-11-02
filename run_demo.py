@@ -1,42 +1,56 @@
 """
-run_demo.py: End-to-end prototype running all algorithms on FT06 with machine disruption.
+run_demo.py: End-to-end demonstration of Dynamic Job Shop Scheduling under Machine Disruptions.
 Demonstrates:
-  1. Classical Baselines (FCFS, SPT)
-  2. Single-Objective GA (Predictive Schedule)
-  3. Machine Breakdown Disruption Injection
-  4. Right-Shift Rescheduling Baseline
-  5. NSGA-II Multi-Objective Rescheduling (Pareto Front)
-  6. Automatic Generation of Gantt Charts and Pareto Front Plots
+  1. Giffler-Thompson Active Dispatching Baselines (FCFS, SPT, EDD)
+  2. Single-Objective GA Predictive Schedule (True Active Schedule Decoding)
+  3. Physically Consistent Machine Breakdown Injection & State Partitioning
+  4. Reactive Baselines: Right-Shift, Reactive FCFS, Reactive SPT, Reactive Single-Obj GA
+  5. Warm-Started NSGA-II Multi-Objective Rescheduling (Makespan, Tardiness, Instability)
+  6. Automated Constraint Verification (`schedule.validate()`) & Publication Gantt/Pareto Plots
 """
 
 import os
+import sys
 import time
 import numpy as np
 from tabulate import tabulate
 
 from src.problem import load_jsp_instance
-from src.baselines import solve_fcfs, solve_spt
+from src.baselines import solve_fcfs, solve_spt, solve_edd
 from src.ga import run_genetic_algorithm
-from src.disruption import BreakdownDisruption, apply_right_shift, partition_disrupted_state
+from src.disruption import (
+    BreakdownDisruption,
+    apply_right_shift,
+    build_disrupted_state,
+    extract_warm_start_chromosomes,
+)
 from src.nsga2 import run_nsga2
 from src.visualize import plot_gantt_chart, plot_pareto_front
 
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 
 def main():
-    print("=" * 75)
-    print(" DYNAMIC JOB SHOP SCHEDULING UNDER MACHINE DISRUPTIONS: PROTOTYPE DEMO")
-    print("=" * 75)
+    print("=" * 88)
+    print(" DYNAMIC JOB SHOP SCHEDULING UNDER MACHINE DISRUPTIONS: COMPLETE BENCHMARK DEMO")
+    print("=" * 88)
 
-    # 1. Load Benchmark Instance (FT06 - 6 jobs, 6 machines, 36 ops)
+    # 1. Load Benchmark Instance (FT06 - 6 jobs, 6 machines, 36 ops; known optimal C_max = 55)
     benchmark_path = "data/benchmarks/ft06.txt"
     print(f"\n[1] Loading Benchmark: {benchmark_path} ...")
     instance = load_jsp_instance(benchmark_path, tightness_factor=1.5)
-    print(f"    - Jobs: {instance.num_jobs}, Machines: {instance.num_machines}, Ops: {instance.total_operations}")
+    print(
+        f"    - Jobs: {instance.num_jobs}, Machines: {instance.num_machines}, "
+        f"Total Ops: {instance.total_operations}, Bottleneck Machine: M{instance.get_bottleneck_machine()}"
+    )
     for j in instance.jobs:
-        print(f"      Job {j.job_id}: Processing={j.total_processing_time}, Due Date={j.due_date}")
+        print(f"      Job {j.job_id}: Total Proc = {j.total_processing_time:2d}, Due Date = {j.due_date:2d}")
 
-    # 2. Evaluate Classical Baselines (FCFS & SPT) on Initial State
-    print("\n[2] Evaluating Classical Dispatching Heuristics (Pre-Breakdown)...")
+    # 2. Pre-Disruption Classical Dispatching Heuristics (Giffler-Thompson Active)
+    print("\n[2] Evaluating Classical Active Dispatching Rules (Pre-Disruption)...")
     t0 = time.time()
     sched_fcfs = solve_fcfs(instance)
     fcfs_time = time.time() - t0
@@ -45,148 +59,182 @@ def main():
     sched_spt = solve_spt(instance)
     spt_time = time.time() - t0
 
-    print(f"    - FCFS: Makespan = {sched_fcfs.makespan}, Tardiness = {sched_fcfs.total_tardiness} (Runtime: {fcfs_time*1000:.2f}ms)")
-    print(f"    - SPT : Makespan = {sched_spt.makespan}, Tardiness = {sched_spt.total_tardiness} (Runtime: {spt_time*1000:.2f}ms)")
-
-    # 3. Single-Objective GA: Produce Initial Predictive Schedule
-    print("\n[3] Running Single-Objective GA (Optimizing Makespan)...")
     t0 = time.time()
-    initial_ga_sched, best_chrom, ga_hist = run_genetic_algorithm(
+    sched_edd = solve_edd(instance)
+    edd_time = time.time() - t0
+
+    assert sched_fcfs.validate() and sched_spt.validate() and sched_edd.validate()
+    print(f"    - FCFS: Makespan = {sched_fcfs.makespan}, Tardiness = {sched_fcfs.total_tardiness}, Energy = {sched_fcfs.total_energy_consumption:.1f} kWh")
+    print(f"    - SPT : Makespan = {sched_spt.makespan}, Tardiness = {sched_spt.total_tardiness}, Energy = {sched_spt.total_energy_consumption:.1f} kWh")
+    print(f"    - EDD : Makespan = {sched_edd.makespan}, Tardiness = {sched_edd.total_tardiness}, Energy = {sched_edd.total_energy_consumption:.1f} kWh")
+
+    # 3. Single-Objective GA: Predictive Baseline Schedule
+    print("\n[3] Running Single-Objective GA (Active Decoding, Optimizing Makespan)...")
+    t0 = time.time()
+    initial_ga_sched, _, _ = run_genetic_algorithm(
         instance,
         pop_size=50,
         generations=80,
         crossover_rate=0.85,
-        mutation_rate=0.15,
+        mutation_rate=0.20,
         seed=42,
     )
     ga_time = time.time() - t0
-    print(f"    - GA Initial: Makespan = {initial_ga_sched.makespan}, Tardiness = {initial_ga_sched.total_tardiness} (Runtime: {ga_time:.2f}s)")
+    assert initial_ga_sched.validate()
+    print(
+        f"    - GA Predictive: Makespan = {initial_ga_sched.makespan} (FT06 Optimal = 55), "
+        f"Tardiness = {initial_ga_sched.total_tardiness}, Energy = {initial_ga_sched.total_energy_consumption:.1f} kWh ({ga_time:.2f}s)"
+    )
 
-    # Save Gantt chart for initial schedule
     os.makedirs("results", exist_ok=True)
     plot_gantt_chart(
         initial_ga_sched,
-        title="Initial Predictive Schedule (Single-Objective GA)",
+        title="Initial Predictive Schedule (Single-Objective Active GA)",
         save_path="results/01_initial_ga_schedule.png",
     )
-    print("    -> Saved plot: results/01_initial_ga_schedule.png")
 
-    # 4. Inject Machine Disruption
-    # Breakdown occurs on Machine 2 at t=20 for duration D=15 (offline from t=20 to 35)
+    # 4. Inject Machine Disruption on Machine 2 at t=20 for D=15 units
     disruption = BreakdownDisruption(machine_id=2, breakdown_start=20, duration=15)
+    state = build_disrupted_state(initial_ga_sched, disruption, instance)
     print(f"\n[4] Injecting Disruption: {disruption}")
+    print(
+        f"    - Frozen Ops (Completed <= {disruption.breakdown_start} or In-Progress on Healthy Machines): "
+        f"{len(state.frozen_ops)}"
+    )
+    print(f"    - Remaining Unscheduled Ops: {len(state.remaining_chromosome_pool)}")
 
-    # 5. Reactive Baseline: Right-Shift Rescheduling
-    print("\n[5] Computing Right-Shift Rescheduling Baseline...")
+    # 5. Evaluate Post-Disruption Reactive Baselines
+    print("\n[5] Evaluating Post-Disruption Reactive Baselines...")
     t0 = time.time()
-    sched_right_shift = apply_right_shift(initial_ga_sched, disruption, instance)
+    sched_rs = apply_right_shift(initial_ga_sched, disruption, instance)
     rs_time = time.time() - t0
-    rs_instability = sched_right_shift.compute_instability(initial_ga_sched, impacted_only_since=disruption.breakdown_start)
-    print(f"    - Right-Shift: Makespan = {sched_right_shift.makespan}, Tardiness = {sched_right_shift.total_tardiness}, Instability = {rs_instability}")
+
+    t0 = time.time()
+    sched_r_fcfs = solve_fcfs(instance, disrupted_state=state)
+    rfcfs_time = time.time() - t0
+
+    t0 = time.time()
+    sched_r_spt = solve_spt(instance, disrupted_state=state)
+    rspt_time = time.time() - t0
+
+    ws_chroms = extract_warm_start_chromosomes(initial_ga_sched, disruption, instance)
+    t0 = time.time()
+    sched_r_ga, _, _ = run_genetic_algorithm(
+        instance,
+        pop_size=50,
+        generations=70,
+        disrupted_state=state,
+        warm_start_chromosomes=ws_chroms,
+        seed=42,
+    )
+    rga_time = time.time() - t0
+
+    for s in (sched_rs, sched_r_fcfs, sched_r_spt, sched_r_ga):
+        assert s.validate(), "Schedule failed feasibility validation!"
+
+    rs_instab = sched_rs.compute_instability(initial_ga_sched, disruption.breakdown_start)
+    rfcfs_instab = sched_r_fcfs.compute_instability(initial_ga_sched, disruption.breakdown_start)
+    rspt_instab = sched_r_spt.compute_instability(initial_ga_sched, disruption.breakdown_start)
+    rga_instab = sched_r_ga.compute_instability(initial_ga_sched, disruption.breakdown_start)
 
     plot_gantt_chart(
-        sched_right_shift,
+        sched_rs,
         disruption=disruption,
-        title="Rescheduled: Right-Shift Baseline",
+        baseline_schedule=initial_ga_sched,
+        title="Post-Disruption Baseline: Right-Shift Rescheduling",
         save_path="results/02_right_shift_schedule.png",
     )
-    print("    -> Saved plot: results/02_right_shift_schedule.png")
 
-    # 6. Partition Disrupted State for Re-Optimization
-    completed_ops, m_ready, j_ready, j_offsets, rem_pool = partition_disrupted_state(
-        initial_ga_sched, disruption, instance
-    )
-    print(f"\n[6] Rescheduling State Partitioned at t={disruption.breakdown_start}:")
-    print(f"    - Completed Ops Frozen: {len(completed_ops)}")
-    print(f"    - Remaining Ops to Reschedule: {len(rem_pool)}")
-    print(f"    - Machine Ready Times: {m_ready}")
-
-    # 7. Run NSGA-II Multi-Objective Rescheduling
-    print("\n[7] Running NSGA-II (Objectives: Makespan, Tardiness, Instability)...")
+    # 6. Run Warm-Started NSGA-II Multi-Objective Rescheduling
+    print("\n[6] Running Warm-Started NSGA-II (Objectives: Makespan, Tardiness, Instability)...")
     t0 = time.time()
     pareto_schedules, pareto_objs = run_nsga2(
         instance,
         baseline_schedule=initial_ga_sched,
         pop_size=60,
-        generations=70,
+        generations=80,
         crossover_rate=0.85,
         mutation_rate=0.20,
-        machine_ready_times=m_ready,
-        job_ready_times=j_ready,
-        job_op_offsets=j_offsets,
-        disruption_time=disruption.breakdown_start,
+        disrupted_state=state,
+        warm_start=True,
         seed=42,
     )
     nsga2_time = time.time() - t0
-    print(f"    - NSGA-II Finished in {nsga2_time:.2f}s. Discovered {len(pareto_schedules)} distinct Pareto trade-off solutions.")
+    for s in pareto_schedules:
+        assert s.validate(), "NSGA-II Pareto schedule failed validation!"
 
-    # 8. Plot Pareto Trade-Off Front
+    print(
+        f"    - NSGA-II completed in {nsga2_time:.2f}s | Discovered {len(pareto_schedules)} "
+        f"validated non-dominated Pareto schedules."
+    )
+
+    # 7. Plot Pareto Trade-Off Frontier with ALL Reactive Baselines
     baseline_pts = {
-        "Right-Shift": (sched_right_shift.makespan, sched_right_shift.total_tardiness, rs_instability),
+        "Right-Shift": (sched_rs.makespan, sched_rs.total_tardiness, rs_instab),
+        "Reactive FCFS": (sched_r_fcfs.makespan, sched_r_fcfs.total_tardiness, rfcfs_instab),
+        "Reactive SPT": (sched_r_spt.makespan, sched_r_spt.total_tardiness, rspt_instab),
+        "Reactive GA": (sched_r_ga.makespan, sched_r_ga.total_tardiness, rga_instab),
     }
     plot_pareto_front(
         pareto_objs,
         baseline_points=baseline_pts,
         save_path="results/03_pareto_frontier.png",
-        title="Dynamic Rescheduling Pareto Frontier (NSGA-II) vs Right-Shift",
+        title="FT06 Post-Disruption Pareto Frontier (NSGA-II) vs Reactive Baselines",
     )
-    print("    -> Saved plot: results/03_pareto_frontier.png")
 
     # Save Gantt charts for extreme Pareto solutions
-    # Solution A: Best Makespan on front
-    best_ms_sched = pareto_schedules[0]
+    best_ms_idx = int(np.argmin(pareto_objs[:, 0]))
+    best_ms_sched = pareto_schedules[best_ms_idx]
     plot_gantt_chart(
         best_ms_sched,
         disruption=disruption,
-        title=f"NSGA-II Solution (Min Makespan = {best_ms_sched.makespan})",
+        baseline_schedule=initial_ga_sched,
+        title=f"NSGA-II Pareto Solution (Min Makespan = {best_ms_sched.makespan})",
         save_path="results/04_nsga2_min_makespan.png",
     )
-    print("    -> Saved plot: results/04_nsga2_min_makespan.png")
 
-    # Solution B: Best Stability (Lowest Instability) on front
     best_stab_idx = int(np.argmin(pareto_objs[:, 2]))
     best_stab_sched = pareto_schedules[best_stab_idx]
     plot_gantt_chart(
         best_stab_sched,
         disruption=disruption,
-        title=f"NSGA-II Solution (Min Instability = {int(pareto_objs[best_stab_idx, 2])})",
+        baseline_schedule=initial_ga_sched,
+        title=f"NSGA-II Pareto Solution (Min Instability ΔS = {int(pareto_objs[best_stab_idx, 2])})",
         save_path="results/05_nsga2_min_instability.png",
     )
-    print("    -> Saved plot: results/05_nsga2_min_instability.png")
 
-    # 9. Comparative Summary Table
-    print("\n" + "=" * 75)
-    print(" FINAL COMPARATIVE SUMMARY")
-    print("=" * 75)
+    # 8. Print Complete Comparative Summary Table
+    print("\n" + "=" * 88)
+    print(" COMPLETE COMPARATIVE SUMMARY (FT06, M2 BREAKDOWN [20, 35])")
+    print("=" * 88)
 
     table_data = [
-        ["FCFS (Pre-Disruption)", sched_fcfs.makespan, sched_fcfs.total_tardiness, "-", f"{fcfs_time*1000:.2f} ms"],
-        ["SPT (Pre-Disruption)", sched_spt.makespan, sched_spt.total_tardiness, "-", f"{spt_time*1000:.2f} ms"],
-        ["Single-Obj GA (Initial)", initial_ga_sched.makespan, initial_ga_sched.total_tardiness, "-", f"{ga_time:.2f} s"],
-        ["Right-Shift (Post-Disruption)", sched_right_shift.makespan, sched_right_shift.total_tardiness, rs_instability, f"{rs_time*1000:.2f} ms"],
+        ["FCFS (Pre-Disruption)", sched_fcfs.makespan, sched_fcfs.total_tardiness, "-", "-", f"{sched_fcfs.total_energy_consumption:.1f}", f"{fcfs_time*1000:.2f} ms"],
+        ["SPT (Pre-Disruption)", sched_spt.makespan, sched_spt.total_tardiness, "-", "-", f"{sched_spt.total_energy_consumption:.1f}", f"{spt_time*1000:.2f} ms"],
+        ["EDD (Pre-Disruption)", sched_edd.makespan, sched_edd.total_tardiness, "-", "-", f"{sched_edd.total_energy_consumption:.1f}", f"{edd_time*1000:.2f} ms"],
+        ["Single-Obj GA (Predictive)", initial_ga_sched.makespan, initial_ga_sched.total_tardiness, "-", "-", f"{initial_ga_sched.total_energy_consumption:.1f}", f"{ga_time:.2f} s"],
+        ["Reactive FCFS (Post-Disruption)", sched_r_fcfs.makespan, sched_r_fcfs.total_tardiness, rfcfs_instab, sched_r_fcfs.compute_sequence_instability(initial_ga_sched), f"{sched_r_fcfs.total_energy_consumption:.1f}", f"{rfcfs_time*1000:.2f} ms"],
+        ["Reactive SPT (Post-Disruption)", sched_r_spt.makespan, sched_r_spt.total_tardiness, rspt_instab, sched_r_spt.compute_sequence_instability(initial_ga_sched), f"{sched_r_spt.total_energy_consumption:.1f}", f"{rspt_time*1000:.2f} ms"],
+        ["Right-Shift (Post-Disruption)", sched_rs.makespan, sched_rs.total_tardiness, rs_instab, sched_rs.compute_sequence_instability(initial_ga_sched), f"{sched_rs.total_energy_consumption:.1f}", f"{rs_time*1000:.2f} ms"],
+        ["Reactive GA (Post-Disruption)", sched_r_ga.makespan, sched_r_ga.total_tardiness, rga_instab, sched_r_ga.compute_sequence_instability(initial_ga_sched), f"{sched_r_ga.total_energy_consumption:.1f}", f"{rga_time:.2f} s"],
     ]
 
     for i, sol in enumerate(pareto_schedules):
         ms = int(pareto_objs[i, 0])
         tar = int(pareto_objs[i, 1])
         instab = int(pareto_objs[i, 2])
-        label = f"NSGA-II Pareto Sol #{i+1}"
-        if i == 0:
-            label += " (Min Makespan)"
+        seq_swaps = sol.compute_sequence_instability(initial_ga_sched)
+        label = f"NSGA-II Pareto #{i+1}"
+        if i == best_ms_idx:
+            label += " [Min C_max]"
         elif i == best_stab_idx:
-            label += " (Min Instability)"
-        table_data.append([label, ms, tar, instab, f"{nsga2_time:.2f} s (front)"])
+            label += " [Min ΔS]"
+        table_data.append([label, ms, tar, instab, seq_swaps, f"{sol.total_energy_consumption:.1f}", f"{nsga2_time:.2f} s"])
 
-    import sys
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
-
-    headers = ["Algorithm / Solution", "Makespan (C_max)", "Total Tardiness (sum T_j)", "Instability (Delta S)", "Runtime"]
+    headers = ["Method / Solution", "Makespan", "Tardiness", "ΔS (Time)", "Seq Swaps", "Energy (kWh)", "Runtime"]
     print(tabulate(table_data, headers=headers, tablefmt="github"))
-    print("=" * 75)
-    print("\nPrototype verification complete! All results and Gantt charts generated in `results/`.")
+    print("=" * 88)
+    print("\nAll schedules passed `validate()`! Updated figures saved to `results/01_*.png` .. `05_*.png`.")
 
 
 if __name__ == "__main__":

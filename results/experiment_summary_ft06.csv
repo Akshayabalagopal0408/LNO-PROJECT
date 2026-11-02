@@ -1,0 +1,147 @@
+Instance,Algorithm,Phase,Seed,Makespan,Tardiness,Instability,Seq_Swaps,Energy_kWh,Runtime_sec
+FT06 (6x6),FCFS,Pre-Disruption,0,65.0,57.0,0.0,0,126.23,0.0
+FT06 (6x6),SPT,Pre-Disruption,0,94.0,70.0,0.0,0,134.09,0.0
+FT06 (6x6),EDD,Pre-Disruption,0,96.0,48.0,0.0,0,133.38,0.0
+FT06 (6x6),Right-Shift,Post-Disruption,0,77.0,132.0,371.0,0,131.65,0.0
+FT06 (6x6),Reactive FCFS,Post-Disruption,0,72.0,57.0,221.0,11,131.34,0.0
+FT06 (6x6),Reactive SPT,Post-Disruption,0,77.0,55.0,264.0,12,133.8,0.0
+FT06 (6x6),Single-Obj GA,Pre-Disruption,0,55.0,33.0,0.0,0,124.79,0.25
+FT06 (6x6),Reactive GA,Post-Disruption,0,68.0,67.0,226.0,11,130.6,0.21875
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,0,68.0,51.0,261.0,14,132.84,1.203125
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,0,69.0,46.0,239.0,12,130.72,1.203125
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,0,70.0,50.0,216.0,11,130.47,1.203125
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),0,70.0,50.0,216.0,11,130.47,2.125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),0,70.0,50.0,216.0,11,130.47,2.3125
+FT06 (6x6),Single-Obj GA,Pre-Disruption,1,55.0,30.0,0.0,0,124.79,0.984375
+FT06 (6x6),Reactive GA,Post-Disruption,1,68.0,67.0,226.0,11,130.6,0.8125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,1,68.0,51.0,261.0,14,132.84,1.46875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,1,69.0,46.0,239.0,12,130.72,1.46875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,1,70.0,50.0,216.0,11,130.47,1.46875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),1,70.0,50.0,216.0,11,130.47,2.09375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),1,70.0,50.0,216.0,11,130.47,2.09375
+FT06 (6x6),Single-Obj GA,Pre-Disruption,2,57.0,36.0,0.0,0,124.13,0.890625
+FT06 (6x6),Reactive GA,Post-Disruption,2,68.0,67.0,226.0,11,130.6,0.8125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,2,68.0,51.0,261.0,14,132.84,1.375
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,2,69.0,46.0,239.0,12,130.72,1.375
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,2,70.0,50.0,216.0,11,130.47,1.375
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),2,70.0,50.0,216.0,11,130.47,1.328125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),2,70.0,50.0,216.0,11,130.47,2.171875
+FT06 (6x6),Single-Obj GA,Pre-Disruption,3,56.0,43.0,0.0,0,125.76,1.0
+FT06 (6x6),Reactive GA,Post-Disruption,3,68.0,56.0,231.0,11,131.59,0.734375
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,3,68.0,51.0,261.0,14,132.84,1.5
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,3,69.0,46.0,239.0,12,130.72,1.5
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,3,70.0,50.0,216.0,11,130.47,1.5
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),3,70.0,50.0,216.0,11,130.47,1.75
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),3,70.0,50.0,216.0,11,130.47,2.078125
+FT06 (6x6),Single-Obj GA,Pre-Disruption,4,55.0,38.0,0.0,0,124.93,0.84375
+FT06 (6x6),Reactive GA,Post-Disruption,4,68.0,67.0,226.0,11,130.6,0.765625
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,4,68.0,51.0,261.0,14,132.84,1.625
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,4,69.0,46.0,239.0,12,130.72,1.625
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,4,70.0,50.0,216.0,11,130.47,1.625
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),4,70.0,50.0,216.0,11,130.47,1.84375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),4,70.0,50.0,216.0,11,130.47,2.109375
+FT06 (6x6),Single-Obj GA,Pre-Disruption,5,58.0,44.0,0.0,0,126.57,1.0
+FT06 (6x6),Reactive GA,Post-Disruption,5,68.0,67.0,226.0,11,130.6,0.8125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,5,68.0,51.0,261.0,14,132.84,1.59375
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,5,69.0,46.0,239.0,12,130.72,1.59375
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,5,70.0,50.0,216.0,11,130.47,1.59375
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),5,69.0,46.0,239.0,12,130.72,1.53125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),5,70.0,50.0,216.0,11,130.47,2.28125
+FT06 (6x6),Single-Obj GA,Pre-Disruption,6,55.0,33.0,0.0,0,124.79,0.765625
+FT06 (6x6),Reactive GA,Post-Disruption,6,68.0,56.0,231.0,11,131.59,0.796875
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,6,68.0,51.0,261.0,14,132.84,1.640625
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,6,69.0,46.0,239.0,12,130.72,1.640625
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,6,70.0,50.0,216.0,11,130.47,1.640625
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),6,70.0,50.0,216.0,11,130.47,1.953125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),6,70.0,50.0,216.0,11,130.47,2.15625
+FT06 (6x6),Single-Obj GA,Pre-Disruption,7,55.0,33.0,0.0,0,124.14,1.015625
+FT06 (6x6),Reactive GA,Post-Disruption,7,68.0,67.0,226.0,11,130.6,0.765625
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,7,68.0,51.0,261.0,14,132.84,1.6875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,7,69.0,46.0,239.0,12,130.72,1.6875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,7,70.0,50.0,216.0,11,130.47,1.6875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),7,70.0,50.0,216.0,11,130.47,1.171875
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),7,70.0,50.0,216.0,11,130.47,2.109375
+FT06 (6x6),Single-Obj GA,Pre-Disruption,8,55.0,30.0,0.0,0,124.79,0.875
+FT06 (6x6),Reactive GA,Post-Disruption,8,68.0,67.0,226.0,11,130.6,0.828125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,8,68.0,51.0,261.0,14,132.84,1.609375
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,8,69.0,46.0,239.0,12,130.72,1.609375
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,8,70.0,50.0,216.0,11,130.47,1.609375
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),8,70.0,50.0,216.0,11,130.47,1.984375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),8,70.0,50.0,216.0,11,130.47,2.015625
+FT06 (6x6),Single-Obj GA,Pre-Disruption,9,55.0,38.0,0.0,0,124.69,0.65625
+FT06 (6x6),Reactive GA,Post-Disruption,9,68.0,67.0,226.0,11,130.6,0.671875
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,9,68.0,51.0,261.0,14,132.84,1.21875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,9,69.0,46.0,239.0,12,130.72,1.21875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,9,70.0,50.0,216.0,11,130.47,1.21875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),9,70.0,50.0,216.0,11,130.47,1.8125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),9,70.0,50.0,216.0,11,130.47,1.5
+FT06 (6x6),Single-Obj GA,Pre-Disruption,10,55.0,38.0,0.0,0,124.04,0.71875
+FT06 (6x6),Reactive GA,Post-Disruption,10,68.0,67.0,226.0,11,130.6,0.640625
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,10,68.0,54.0,236.0,12,132.62,0.796875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,10,70.0,50.0,216.0,11,130.47,0.796875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,10,70.0,50.0,216.0,11,130.47,0.796875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),10,70.0,50.0,216.0,11,130.47,1.234375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),10,70.0,50.0,216.0,11,130.47,1.6875
+FT06 (6x6),Single-Obj GA,Pre-Disruption,11,57.0,39.0,0.0,0,125.39,1.046875
+FT06 (6x6),Reactive GA,Post-Disruption,11,68.0,67.0,226.0,11,130.6,0.828125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,11,68.0,51.0,261.0,14,132.84,1.328125
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,11,69.0,46.0,239.0,12,130.72,1.328125
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,11,70.0,50.0,216.0,11,130.47,1.328125
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),11,70.0,50.0,216.0,11,130.47,1.03125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),11,70.0,50.0,216.0,11,130.47,1.421875
+FT06 (6x6),Single-Obj GA,Pre-Disruption,12,55.0,38.0,0.0,0,124.93,0.828125
+FT06 (6x6),Reactive GA,Post-Disruption,12,68.0,67.0,226.0,11,130.6,0.71875
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,12,68.0,51.0,261.0,14,132.84,1.5625
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,12,69.0,46.0,239.0,12,130.72,1.5625
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,12,70.0,50.0,216.0,11,130.47,1.5625
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),12,70.0,50.0,216.0,11,130.47,1.140625
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),12,70.0,50.0,216.0,11,130.47,1.921875
+FT06 (6x6),Single-Obj GA,Pre-Disruption,13,55.0,33.0,0.0,0,124.14,0.953125
+FT06 (6x6),Reactive GA,Post-Disruption,13,68.0,67.0,226.0,11,130.6,0.484375
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,13,68.0,51.0,261.0,14,132.84,1.171875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,13,69.0,46.0,239.0,12,130.72,1.171875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,13,70.0,50.0,216.0,11,130.47,1.171875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),13,70.0,50.0,216.0,11,130.47,1.046875
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),13,70.0,50.0,216.0,11,130.47,1.65625
+FT06 (6x6),Single-Obj GA,Pre-Disruption,14,55.0,33.0,0.0,0,124.79,0.921875
+FT06 (6x6),Reactive GA,Post-Disruption,14,68.0,67.0,226.0,11,130.6,0.703125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,14,68.0,51.0,261.0,14,132.84,1.25
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,14,69.0,46.0,239.0,12,130.72,1.25
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,14,70.0,50.0,216.0,11,130.47,1.25
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),14,70.0,50.0,216.0,11,130.47,1.890625
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),14,70.0,50.0,216.0,11,130.47,1.265625
+FT06 (6x6),Single-Obj GA,Pre-Disruption,15,55.0,33.0,0.0,0,124.14,0.546875
+FT06 (6x6),Reactive GA,Post-Disruption,15,68.0,67.0,226.0,11,130.6,0.75
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,15,68.0,51.0,261.0,14,132.84,1.21875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,15,69.0,46.0,239.0,12,130.72,1.21875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,15,70.0,50.0,216.0,11,130.47,1.21875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),15,70.0,50.0,216.0,11,130.47,1.8125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),15,70.0,50.0,216.0,11,130.47,1.953125
+FT06 (6x6),Single-Obj GA,Pre-Disruption,16,55.0,30.0,0.0,0,124.79,0.921875
+FT06 (6x6),Reactive GA,Post-Disruption,16,68.0,67.0,226.0,11,130.6,0.703125
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,16,68.0,51.0,261.0,14,132.84,1.296875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,16,69.0,46.0,239.0,12,130.72,1.296875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,16,70.0,50.0,216.0,11,130.47,1.296875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),16,70.0,50.0,216.0,11,130.47,1.109375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),16,70.0,50.0,216.0,11,130.47,2.03125
+FT06 (6x6),Single-Obj GA,Pre-Disruption,17,55.0,38.0,0.0,0,124.28,0.78125
+FT06 (6x6),Reactive GA,Post-Disruption,17,68.0,67.0,226.0,11,130.6,0.5
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,17,68.0,51.0,261.0,14,132.84,1.515625
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,17,69.0,46.0,239.0,12,130.72,1.515625
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,17,70.0,50.0,216.0,11,130.47,1.515625
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),17,70.0,50.0,216.0,11,130.47,1.4375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),17,70.0,50.0,216.0,11,130.47,2.171875
+FT06 (6x6),Single-Obj GA,Pre-Disruption,18,55.0,38.0,0.0,0,124.69,0.578125
+FT06 (6x6),Reactive GA,Post-Disruption,18,68.0,67.0,226.0,11,130.6,0.75
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,18,68.0,51.0,261.0,14,132.84,1.53125
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,18,69.0,46.0,239.0,12,130.72,1.53125
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,18,70.0,50.0,216.0,11,130.47,1.53125
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),18,70.0,50.0,216.0,11,130.47,1.28125
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),18,70.0,50.0,216.0,11,130.47,1.890625
+FT06 (6x6),Single-Obj GA,Pre-Disruption,19,55.0,33.0,0.0,0,124.79,0.875
+FT06 (6x6),Reactive GA,Post-Disruption,19,68.0,54.0,236.0,12,132.62,0.640625
+FT06 (6x6),NSGA-II 3D (Min Makespan),Post-Disruption,19,68.0,51.0,261.0,14,132.84,1.421875
+FT06 (6x6),NSGA-II 3D (Knee Compromise),Post-Disruption,19,69.0,46.0,239.0,12,130.72,1.421875
+FT06 (6x6),NSGA-II 3D (Min Instability),Post-Disruption,19,70.0,50.0,216.0,11,130.47,1.421875
+FT06 (6x6),NSGA-II 4D (Knee),Post-Disruption (4D),19,70.0,50.0,216.0,11,130.47,2.09375
+FT06 (6x6),NSGA-III 4D (Knee),Post-Disruption (4D),19,70.0,50.0,216.0,11,130.47,1.9375

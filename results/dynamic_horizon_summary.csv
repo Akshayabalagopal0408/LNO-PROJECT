@@ -1,0 +1,6 @@
+Stage,Method,Makespan,Total_Tardiness,Rush_Job_Tardiness,Instability_vs_Prev,Energy_kWh
+"Stage 0 (t=0, 6 Jobs)",Predictive Memetic GA,55,30,-,0,124.79
+"Event 1 (t=16, M2 Down [16,30])",Rolling U-NSGA-III (Knee),64,42,-,174,128.37
+"Event 2 (t=34, M4 Down + Rush J6)",Right-Shift + FIFO Rush,85,147,30,155,142.34
+"Event 2 (t=34, M4 Down + Rush J6)",Reactive FCFS,91,151,25,217,141.74
+"Event 2 (t=34, M4 Down + Rush J6)",Rolling U-NSGA-III (Knee),82,138,9,134,140.65
